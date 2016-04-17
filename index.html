@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>canvas player</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="ss">
+        <div class="f-cover">
+        </div>
+        <div class="f-video">
+            <video controls src="http://nettuts.s3.amazonaws.com/763_sammyJSIntro/trailer_test.mp4">
+            </video>
+            <div class="f-video-controls">
+                <div class="f-play f-pause f-component"></div>
+                <div class="f-progress f-component">
+                    <div class="f-progress-move">
+                    </div>
+                </div>
+                <div class="f-display-time f-component">
+                    0:0
+                </div>
+                <div class="f-volume f-component">
+                    <div class="f-volume-move">
+                    </div>
+                </div>
+                <div class="f-fullscreen f-component"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="http://cdn.bootcss.com/jquery/2.2.1/jquery.js"></script>
+<script src="./index.js"></script>
+
+<script>
+    var f = new Fvideo(
+    {
+        container: '.ss'
+    });
+</script>
+
+</html>
