@@ -22,28 +22,57 @@ Fvideo.fn.render = function() {
 
 Fvideo.fn.listenEvent = function() {
     this.$el.on('click', '.f-play', this.togglePlay.bind(this))
-        .on('click', '.f-fullscreen', this.toggleFullscreen.bind(this));
+        .on('click', '.f-fullscreen', this.toggleFullscreen.bind(this))
+        .on('click', '.f-volume-control', this.toggleVolume.bind(this));
     this.video.addEventListener('timeupdate', this.syncProgress.bind(this));
+}
+
+Fvideo.fn.toggleVolume = function(e) {
+    var $d = this.$el.find('.f-volume-control');
+    if ($d.hasClass('f-small-volume')) {
+        this.video.volume = this._volume;
+        this.switchIcon($d, 1);
+    } else {
+        this.video.volume = 0;
+        this.switchIcon($d, 2);
+        this.$el.find('.f-volume-move').css('left', 0 + 'px');
+    }
+    $d.toggleClass('f-small-volume');
 }
 
 Fvideo.fn.toggleFullscreen = function(e) {
     this.$el.toggleClass('f-like-fullscreen');
+    var $d = this.$el.find('.f-fullscreen');
+    if (this.$el.hasClass('f-like-fullscreen')) {
+        this.switchIcon($d, 2);
+    } else {
+        this.switchIcon($d, 1);
+    }
 }
 
 Fvideo.fn.togglePlay = function(e) {
-    var $d = $(e.target);
+    var $d = this.$el.find('.f-play');
     if ($d.hasClass('f-pause')) {
         this.video.play();
+        this.switchIcon($d, 2);
     } else {
         this.video.pause();
+        this.switchIcon($d, 1);
     }
     $d.toggleClass('f-pause');
 }
+
+Fvideo.fn.switchIcon = function($d, n) {
+    $d.find('.switch-icon')
+        .removeClass('icon-' + (n == 1 ? 2 : 1))
+        .addClass('icon-' + n);
+};
 
 Fvideo.fn.initVolume = function() {
     var f = this.moveVolume.bind(this);
     var progressLength = this.$el.find('.f-volume').outerWidth() - 8;
     this.$el.find('.f-volume-move').css('left', progressLength + 'px');
+    this._volume = 1;
     this.$el.on('mousedown', '.f-volume-move', function() {
         $('body').on('mousemove', f)
             .on('mouseup', function() {
@@ -63,6 +92,7 @@ Fvideo.fn.moveVolume = function(e) {
 
 Fvideo.fn.setVolume = function(v) {
     this.video.volume = v;
+    this._volume = v;
 }
 
 Fvideo.fn.initProgress = function() {
